@@ -10,6 +10,11 @@ class Question:
         self.question = question
         self.choices = choices
         self.allow_text = allow_text
+    
+    #added this to make it easier to read survey.question
+    #helpful link: https://www.geeksforgeeks.org/print-objects-of-a-class-in-python/
+    def __repr__(self):
+        return f'Question: {self.question}'
 
 
 class Survey:

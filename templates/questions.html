@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %} Question Page {% endblock %}
+
+{% block content %}
+
+    <form action="/questions/{{id + 1}}" method="POST">
+        <p>{{question}}</p>
+        <input type="checkbox" > Yes
+        <input type="checkbox"> No
+        <button>Submit</button>
+    </form>
+{% endblock %}
