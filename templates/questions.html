@@ -3,10 +3,11 @@
 
 {% block content %}
 
-    <form action="/questions/{{id + 1}}" method="POST">
+    <form action="/answer" name="form" method="POST" >
         <p>{{question}}</p>
-        <input type="checkbox" > Yes
-        <input type="checkbox"> No
+        {% for choice in answer_choices %}
+            <input type="checkbox" name="answer" value="{{choice}}"> {{choice}}
+        {% endfor %}
         <button>Submit</button>
     </form>
 {% endblock %}
