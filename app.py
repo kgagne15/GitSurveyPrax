@@ -1,5 +1,5 @@
 from crypt import methods
-from flask import Flask, request, render_template, redirect, flash
+from flask import Flask, request, render_template, redirect, flash, session
 from surveys import Survey, Question, satisfaction_survey
 # from flask_debugtoolbar import DebugToolbarExtension
 
@@ -20,11 +20,17 @@ def home_page():
     instructions = satisfaction_survey.instructions
     return render_template('home.html', instructions=instructions, title=title)
 
+@app.route('/session-set', methods=['POST'])
+def set_session():
+    session['responses'] = []
+    return redirect('/questions/0')
+
 @app.route('/questions/<int:id>')
 def questions_page(id):
-    if len(responses) == len(satisfaction_survey.questions):
+    length = len(list(session['responses']))
+    if length == len(satisfaction_survey.questions):
         return render_template('thanks.html')
-    elif id == len(responses):
+    elif id == length:
         question = satisfaction_survey.questions[id]
         answer_choices = satisfaction_survey.questions[id].choices
         return render_template('questions.html', question=question, id=id, answer_choices=answer_choices)
@@ -37,9 +43,11 @@ def questions_page(id):
 @app.route('/answer', methods=["POST"])
 def answer_page():
     answer = request.form['answer']
+    responses = session['responses']
     responses.append(answer)
-    id = (len(responses))
-    if id < len(satisfaction_survey.questions):
-        return redirect(f'questions/{len(responses)}')
+    session['responses'] = responses
+    length = len(list(session['responses']))
+    if length < len(satisfaction_survey.questions):
+        return redirect(f'questions/{length}')
     else: 
         return render_template('thanks.html')
