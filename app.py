@@ -35,10 +35,10 @@ def questions_page(id):
         answer_choices = satisfaction_survey.questions[id].choices
         return render_template('questions.html', question=question, id=id, answer_choices=answer_choices)
     else: 
-        question = satisfaction_survey.questions[len(responses)]
-        answer_choices = satisfaction_survey.questions[len(responses)].choices
+        # question = satisfaction_survey.questions[len(responses)]
+        # answer_choices = satisfaction_survey.questions[len(responses)].choices
         flash("You must answer the questions in order.")
-        return redirect(f'/questions/{len(responses)}')
+        return redirect(f'/questions/{length}')
 
 @app.route('/answer', methods=["POST"])
 def answer_page():
@@ -50,4 +50,5 @@ def answer_page():
     if length < len(satisfaction_survey.questions):
         return redirect(f'questions/{length}')
     else: 
+        #print(session['responses'])
         return render_template('thanks.html')
